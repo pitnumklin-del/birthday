@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        body {
+            background-color: #faf9f6;
+            color: #2c2c2c;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ระบบหน้าเว็บ (Slides) */
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(20px);
+        }
+
+        .page.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        /* โครงสร้างเนื้อหาด้านในแต่ละหน้า */
+        .content-container {
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            font-weight: 300;
+            letter-spacing: 1.5px;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+        h1 { font-size: 24px; }
+        h2 { font-size: 22px; }
+
+        p {
+            font-weight: 300;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        /* จัดแต่งรูปภาพสไตล์มินิมอล (รองรับ 3-4 รูป) */
+        .image-box {
+            width: 100%;
+            height: 260px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(15%); /* ให้รูปดูคุมโทนละมุนขึ้น */
+            transition: transform 0.5s ease;
+        }
+
+        .image-box img:hover {
+            transform: scale(1.03);
+        }
+
+        /* ปุ่มกดเปลี่ยนหน้า */
+        .btn-next {
+            background: transparent;
+            color: #2c2c2c;
+            border: 1px solid #2c2c2c;
+            padding: 8px 28px;
+            font-size: 13px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-next:hover {
+            background: #2c2c2c;
+            color: #faf9f6;
+        }
+
+        /* จุดบอกสถานะหน้า (Pagination Dots) */
+        .dots-container {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background-color: #d1c7bd;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background-color: #2c2c2c;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- หน้าที่ 1: หน้าต้อนรับ -->
+    <div class="page active" id="page-1">
+        <div class="content-container">
+            <h1>วันเกิดใครหว่าาาา</h1>
+            <p>จุ้ๆ ต้องจุ้บก่อนถึงเปิดได้</p>
+            <button class="btn-next" onclick="nextPage(2)">ไปคั้บ</button>
+        </div>
+    </div>
+
+    <!-- หน้าที่ 2: รูปที่ 1 + ข้อความ -->
+    <div class="page" id="page-2">
+        <div class="content-container">
+            <div class="image-box">
+                <!-- เปลี่ยนลิงก์รูปภาพตรง src เป็นรูปของคุณได้ -->
+                <img src="https://i.pinimg.com/1200x/85/a2/b0/85a2b077a9421cf6c43549b6297c3220.jpg">
+            </div>
+            <h2>เอาหล่ะ หน้าแรกไม่มีอะไรหรอก</h2>
+            <p></p>
+            <button class="btn-next" onclick="nextPage(3)">ไปต่ออออ!!!</button>
+        </div>
+    </div>
+
+    <!-- หน้าที่ 3: รูปที่ 2 และ 3 (จัดวางแบบสมดุล) หรือรูปเดี่ยวคลีนๆ -->
+    <div class="page" id="page-3">
+        <div class="content-container">
+            <div class="image-box">
+                <img src="https://i.pinimg.com/736x/7e/79/5e/7e795eec53912b33220fb1053c8b25d4.jpg">
+            </div>
+            <h2>เริ่มละน้าาาา</h2>
+            <p></p>
+            <button class="btn-next" onclick="nextPage(4)">กดอี้กนิ้ดเดียว</button>
+        </div>
+    </div>
+
+    <!-- หน้าที่ 4: หน้าสุดท้าย เค้ก + รูปที่ 4 -->
+    <div class="page" id="page-4">
+        <div class="content-container">
+            <div class="image-box" style="height: 180px;">
+                <img src="https://i.pinimg.com/736x/05/86/1b/05861b0af7d7ed738dcfe204fd629386.jpg">
+            </div>
+            <h2>Happy Birthday na kub 20y</h2>
+            <p>20ปีแล้ว ทำอะไรคิดให้มันเยอะๆนะครับ เค้าอยู่ตรงนี้ไม่ไปไหนหรอก เค้ารักเบ้บนะรักมากด้วย อยู่ด้วยกันไปนานๆน้าาาาา </p>
+            <button class="btn-next" onclick="nextPage(1)">Replay</button>
+        </div>
+    </div>
+
+    <!-- แถบจุดบอกตำแหน่งหน้า -->
+    <div class="dots-container">
+        <div class="dot active" id="dot-1"></div>
+        <div class="dot" id="dot-2"></div>
+        <div class="dot" id="dot-3"></div>
+        <div class="dot" id="dot-4"></div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 4;
+
+        function nextPage(pageNumber) {
+            // ซ่อนหน้าเก่า
+            document.getElementById(`page-${currentPage}`).classList.remove('active');
+            document.getElementById(`dot-${currentPage}`).classList.remove('active');
+
+            // เปลี่ยนเลขหน้าปัจจุบัน
+            currentPage = pageNumber;
+
+            // แสดงหน้าใหม่
+            document.getElementById(`page-${currentPage}`).classList.add('active');
+            document.getElementById(`dot-${currentPage}`).classList.add('active');
+        }
+    </script>
+</body>
+</html>
